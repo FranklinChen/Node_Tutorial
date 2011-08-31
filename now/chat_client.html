@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <title>Now.js Chat Client Example</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="Studio 3 http://aptana.com/" />
+  <meta name="author" content="Steve Brownlee" />
+
+  <meta name="viewport" content="initial-scale=1.0" />
+
+  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://192.168.80.128:8081/nowjs/now.js"></script>
+  
+  <script>
+  $(document).ready(function(){
+    
+    /**
+     * When user clicks the submit button, distribute the message
+     * that was entered in the message-text box on the now object.
+     */
+    $("#send-button").click(function(){
+      var chatterName = $('#user-name').val();
+      
+      if (chatterName !== '') {
+        
+        now.name = chatterName;
+        
+        // Blank out the message and distribute
+        $('#required').html('');
+        $("#message-text").val("");
+        now.distributeMessage($("#message-text").val());
+
+      } else {
+        
+        // Tell the user that a name has to be entered
+        $('#required').html('please enter your name first')
+        
+      }
+    });
+    
+    /**
+     * When a message is received, append the text in the
+     * messages textbox.
+     */
+    now.receiveMessage = function(name, message){
+      $("#messages").append("<br>" + name + ": " + message);
+      
+      // Keep the scrolling at the bottom with a subtle animation
+      $('#messages').animate({
+          scrollTop: $('#messages').get(0).scrollHeight
+      }, 1500);
+    }
+  });
+  </script>
+  
+  <style type="text/css">
+    .log {
+      float: right; 
+      border: 1px solid black; 
+      width:400px; 
+      height: 400px;
+      overflow: scroll;
+    }
+    
+    #required { color: red; }
+  </style>
+  
+</head>
+
+<body>
+  <div id="messages" class="log"></div>
+  <div style="float: left;">
+    <header>
+      <h1>Now.js Chat Client</h1>
+    </header>
+    <nav>
+      
+    </nav>
+
+    <div>
+      <p>Your name: <input type="text" id="user-name" /><span id="required"></span></p>
+      <p><textarea id="message-text" rows="5" cols="40"></textarea></p>
+      <input type="button" id="send-button" value="Send Message" />
+    </div>
+
+    <footer>
+     <p>&copy; Copyright 2011 by Steve Brownlee</p>
+    </footer>
+  </div>
+</body>
+</html>

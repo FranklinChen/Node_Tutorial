@@ -5,7 +5,7 @@ var zombie = require("zombie"),
 *  Browse to a local file, and if it's found, we get a headless browser object back
 */
 zombie.visit("http://127.0.0.1:8081/lorem.htm", 
-	{debug: true}, 
+	{debug: false}, 
 	function(err, browser) {
 
 		// Log any error that occurs
@@ -24,7 +24,7 @@ zombie.visit("http://127.0.0.1:8081/lorem.htm",
 			      	} else {
 					try {
 						// Make sure we have an element with the ID brains.
-						assert.ok(browser.querySelector("#gotcha"));
+						assert.ok(document.querySelector("#gotcha"));
 				
 						// Make sure body has two elements with the class hand.
 						assert.equal(browser.body.querySelectorAll(".tiny").length, 2);
@@ -33,15 +33,19 @@ zombie.visit("http://127.0.0.1:8081/lorem.htm",
 						assert.equal(browser.text("title"), "Gotcha");
 				
 						// Show me the document contents.
-						console.log(browser.html());
+						console.log('');
+            console.log('  ****  ALL TESTS PASSED  ****');
+            console.log('');
 				
-						// Show me the contents of the parts table:
-						console.log(browser.html("table.parts"));
 					} catch (e) {
+					  console.log(e);
 						var stack = e.stack.split(':');
-						console.log('Assertion Error ');
-						console.log('--------------------------------------------------');
-						console.log(stack[1] + ':' + stack[2]);
+            console.log('');
+						console.log('  ****  ASSERTION ERROR  ****');
+						console.log('  --------------------------------------------------------');
+						console.log('  ' + stack[1] + ':' + stack[2]);
+            console.log('  --------------------------------------------------------');
+            console.log('');
 					}
 				}
 			});

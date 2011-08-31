@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+
+  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
+       Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+  <title>Now.js Chat Client Example</title>
+  <meta name="description" content="" />
+  <meta name="generator" content="Studio 3 http://aptana.com/" />
+  <meta name="author" content="Steve Brownlee" />
+
+  <meta name="viewport" content="initial-scale=1.0" />
+
+  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://10.110.74.136:8081/nowjs/now.js"></script>
+  
+  <script>
+  $(document).ready(function(){
+    var howDrunkAmI = 0, currentBeerLevel = 100;
+    
+    /**
+     * When user clicks the submit button, distribute the message
+     * that was entered in the message-text box on the now object.
+     */
+    $("#register").click(function(){
+      var drinkerName = $('#user-name').val();
+      
+      if (drinkerName !== '') {
+        
+        $('#required').html('');
+        howDrunkAmI = 0;
+        now.drinker = drinkerName;        
+        now.registerDrinker(drinkerName);
+
+      } else {
+        
+        // Tell the user that a name has to be entered
+        $('#required').html('Please enter your name first');
+        
+      }
+    });
+    
+    /**
+     * When a message is received, append the text in the
+     * messages textbox.
+     */
+    now.addDrinker = function(name){
+      $("#drinkingLog").append("<br>" + name + " is now ready to drink.");
+      
+      // Keep the scrolling at the bottom with a subtle animation
+      $('#drinkingLog').animate({
+          scrollTop: $('#drinkingLog').get(0).scrollHeight
+      }, 1500);
+    }
+    
+    $("#drink").click(function(){
+      var drinkerName = $('#user-name').val();
+      
+      if (drinkerName !== '') {
+        
+        now.drinker = drinkerName;
+        howDrunkAmI += 1;
+        now.increaseDrunkenness(howDrunkAmI);
+
+      } else {
+        
+        // Tell the user that a name has to be entered
+        $('#required').html('Please enter your name first');
+        
+      }
+    });
+    
+    now.updateDrunkLevel = function(drinker, drunkLevel) {
+      $("#drinkingLog").append("<br>" + drinker + " has now chugged " + drunkLevel + " beers!");
+      
+      // Keep the scrolling at the bottom with a subtle animation
+      $('#drinkingLog').animate({
+          scrollTop: $('#drinkingLog').get(0).scrollHeight
+      }, 150);
+    }
+    
+    now.declareWinner = function(winner) {
+      alert(winner + ' has just passed out in the bathroom. Game over!');
+      howDrunkAmI = 0;
+    }
+  });
+  </script>
+  
+  <style type="text/css">
+    .log {
+      float: right; 
+      border: 1px solid black; 
+      width:400px; 
+      height: 400px;
+      overflow: scroll;
+    }
+    
+    #required { color: red; }
+    #adminMessage { font-size: 30px; color: #FF0000; } 
+  </style>
+</head>
+
+<body>
+
+  <div id="drinkingLog" class="log"></div>
+  
+  <div style="float: left;">
+    <header>
+      <h1>Beer Drinker Game!</h1>
+    </header>
+    <nav>
+      
+    </nav>
+
+    <div>
+      <p>
+        Your name: <input type="text" id="user-name" /><span id="required"></span><br/>
+        <input type="button" id="register" value="Register Me" /><br/>
+        <input type="button" id="drink" value="Drink A Beer" /><br/>
+      </p>
+      
+      <div id="adminMessage"></div>
+    </div>
+
+    <footer>
+     <p>&copy; Copyright 2011 by Steve Brownlee</p>
+    </footer>
+  </div>
+</body>
+</html>
