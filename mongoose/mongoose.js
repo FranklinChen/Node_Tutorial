@@ -1,8 +1,13 @@
-var mongoose = require('mongoose'),
-    db = mongoose.connect('mongodb://localhost/test'),
-    express = require('express'),
-    app = express.createServer(),
-    Schema = mongoose.Schema,
+/**
+ * Mongoose.js is a simple Node application that allows a web user to browse
+ * beers from a simple menu, increase or decrease their rating, and view details
+ * of each individual beer.
+ */
+var mongoose  = require('mongoose'),
+    db        = mongoose.connect('mongodb://localhost/test'),
+    express   = require('express'),
+    app       = express.createServer(),
+    Schema    = mongoose.Schema,
     
     Type = new Schema({
 		  name	        : String,
@@ -62,18 +67,10 @@ app.get('/', function(req, res, next){
  * @param {Object} next
  */
 app.get('/orderbeers', function(req, res, next){
-  var Yuengling = new BeerModel({ 
-    brand:'Yuengling', 
-    brewery_age:105, 
-    rating: 40 
-  });
   
-  Yuengling.type.push({ 
-    name:'Lager', 
-    main_ingredient:'Malted Barley' 
-  });
-  
-  Yuengling.save(function(err){ 
+  var Yuengling = new BeerModel({ brand:'Yuengling', brewery_age:105, rating: 40 });
+  Yuengling.type.push({ name:'Lager', main_ingredient:'Malted Barley' });
+  Yuengling.save(function(err){
     if (err) { console.log(err); } 
   });
   
@@ -135,7 +132,6 @@ app.get('/beer/id/:id', function(req, res, next){
   var id = req.params.id,
       text='';
 
-
   BeerModel.findById(id, function(err, beer) {
     // Ensure item exists
     if (beer) {
@@ -143,9 +139,7 @@ app.get('/beer/id/:id', function(req, res, next){
     } else {
       next(new Error('Beer named ' + id + ' does not exist'));
     }
-
   });
-    
 });
 
 
@@ -156,9 +150,8 @@ app.get('/beer/id/:id', function(req, res, next){
  * @param {Object} response
  * @param {Object} next
  */
-app.get('/beer/remove/:id', function(req, res, next){
+app.get('/beer/remove/:id', function (req, res, next) {
   var id = req.params.id;
-
 
   BeerModel.findById(id, function(err, beer) {
     // If the beer exists, remove it
@@ -169,9 +162,7 @@ app.get('/beer/remove/:id', function(req, res, next){
     } else {
       next(new Error('Beer named ' + id + ' does not exist'));
     }
-
   });
-    
 });
 
 
@@ -182,10 +173,9 @@ app.get('/beer/remove/:id', function(req, res, next){
  * @param {Object} response
  * @param {Object} next
  */
-app.get('/beer/improve/:id', function(req, res, next){
+app.get('/beer/improve/:id', function (req, res, next) {
   var id = req.params.id,
       rating;
-
 
   BeerModel.findById(id, function(err, beer) {
     // Ensure item exists
@@ -196,9 +186,7 @@ app.get('/beer/improve/:id', function(req, res, next){
     } else {
       next(new Error('Beer named ' + id + ' does not exist'));
     }
-
   });
-    
 });
 
 
@@ -209,10 +197,9 @@ app.get('/beer/improve/:id', function(req, res, next){
  * @param {Object} response
  * @param {Object} next
  */
-app.get('/beer/reduce/:id', function(req, res, next){
+app.get('/beer/reduce/:id', function (req, res, next) {
   var id = req.params.id,
       rating;
-
 
   BeerModel.findById(id, function(err, beer) {
     // Ensure item exists
@@ -223,9 +210,7 @@ app.get('/beer/reduce/:id', function(req, res, next){
     } else {
       next(new Error('Beer named ' + id + ' does not exist'));
     }
-
   });
-    
 });
 
 
